@@ -2,7 +2,9 @@
 The WDL version of [GeneLab bioinformatics processing pipeline for Illumina amplicon sequencing data](https://github.com/nasa/GeneLab_Data_Processing/tree/master/Amplicon/Illumina)
 
 ## Docker run cmd: 
+```
 docker run --rm -it -v $PWD/raw-reads:/data/Raw_Sequence_Data -v $PWD/unique-sample_IDs.txt:/data/SW_AmpIllumina-A_1.0.1/unique-sample-IDs.txt ampillumina  snakemake --use-conda --conda-prefix /opt/conda/envs -j 2 -p
+```
 
 ## Notes
 * bind the data directory to /data/Raw_Sequence_Data or full path to the dir
@@ -12,7 +14,3 @@ docker run --rm -it -v $PWD/raw-reads:/data/Raw_Sequence_Data -v $PWD/unique-sam
 * or write GUI json parameter to /data/SW_AmpIllumina-A_1.0.1/config.json
     * use json instead of yaml in Snakefile: configfile: "config.yaml"  > configfile: "config.json"
 
-# cmds for wdl task:
-cp $config config.json
-sed -ie 's/config.yaml/config.json/' Snakefile
-snakemake --use-conda --conda-prefix /opt/conda/envs -j 2 -p
