@@ -3,7 +3,7 @@ The WDL version of [GeneLab bioinformatics processing pipeline for Illumina ampl
 
 ## Docker run cmd: 
 ```
-docker run --rm -it -v $PWD/raw-reads:/data/Raw_Sequence_Data -v $PWD/unique-sample_IDs.txt:/data/SW_AmpIllumina-A_1.0.1/unique-sample-IDs.txt ampillumina  snakemake --use-conda --conda-prefix /opt/conda/envs -j 2 -p
+docker run --rm -it -v $PWD/raw-reads:/data/Raw_Sequence_Data -v $PWD/unique-sample_IDs.txt:/data/SW_AmpIllumina-A_1.0.1/unique-sample-IDs.txt bioedge/ampillumina:1.0.1  snakemake --use-conda --conda-prefix /opt/conda/envs -j 2 -p
 ```
 
 ## Notes
