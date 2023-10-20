@@ -21,8 +21,15 @@ workflow AmpIllumina{
         container = container
     }
 
+    call tsv_to_json{
+        input:
+        final_outputs_dir = read_config.final_outputs_dir,
+        container = container
+    }
+
     output{
         File zipped_output = AmpIllumina_sm.zipped_output
+        Array[File] json_file = tsv_to_json.json_file
     }
     
 }
@@ -107,7 +114,9 @@ task tsv_to_json{
             df.to_json(json_file, orient='records', lines=True)
         CODE
     >>>
-
+    output{
+        Array[File] json_file = glob('~{final_outputs_dir}/*.json')
+    }
     runtime{
         docker: container
     }
