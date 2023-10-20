@@ -32,6 +32,7 @@ RUN eval "$(micromamba shell hook --shell bash)" \
     && conda config --add channels conda-forge \
     && conda config --set channel_priority strict \
     && micromamba activate genelab-utils \
+    && chmod -R 777 $HOME/.cache \
     && GL-get-workflow Amplicon-Illumina --wanted-version 1.0.1
 
 # directory with Snakefile  
