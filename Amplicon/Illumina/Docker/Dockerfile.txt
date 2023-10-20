@@ -18,7 +18,7 @@ ENV LC_ALL=C
 #USER root 
 
 #  genelab-utils install 
-RUN micromamba create -n genelab-utils -c conda-forge -c bioconda -c defaults -c astrobiomike 'genelab-utils>=1.1.02' \
+RUN micromamba create -n genelab-utils -c conda-forge -c bioconda -c defaults -c astrobiomike 'genelab-utils>=1.1.02' jq \
     && micromamba clean --all -y \
     && echo "micromamba activate genelab-utils" >> ~/.bashrc \
     && echo "alias ll='ls -alh' " >> ~/.bashrc
