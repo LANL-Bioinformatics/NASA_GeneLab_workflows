@@ -1,7 +1,7 @@
 version 1.0
 workflow AmpIllumina{
     input{
-        String config_json
+        File config_json
         String container = "bioedge/ampillumina:1.0.1"
         }
 
@@ -13,6 +13,7 @@ workflow AmpIllumina{
     
     call AmpIllumina_sm{
         input:
+        config_json = config_json,
         output_prefix = read_config.output_prefix,
         fastqc_out_dir = read_config.fastqc_out_dir,
         trimmed_reads_dir = read_config.trimmed_reads_dir,
@@ -23,7 +24,7 @@ workflow AmpIllumina{
 
     call tsv_to_json{
         input:
-        final_outputs_dir = read_config.final_outputs_dir,
+        final_outputs_dir = AmpIllumina_sm.AmpIllumina_final_outputs_dir,
         container = container
     }
 
@@ -36,18 +37,18 @@ workflow AmpIllumina{
 
 task read_config{
     input{
-        String config_json
+        File config_json
         String container
     } 
     
     command <<<
     cp ~{config_json} config.json
 
-    echo "$(jq -r '.output_prefix' config.json)"
-    echo "$(jq -r '.fastqc_out_dir' config.json)"
-    echo "$(jq -r '.trimmed_reads_dir' config.json)"
-    echo "$(jq -r '.filtered_reads_dir' config.json)"
-    echo "$(jq -r '.final_outputs_dir' config.json)"
+    jq -r '.output_prefix' config.json
+    jq -r '.fastqc_out_dir' config.json
+    jq -r '.trimmed_reads_dir' config.json
+    jq -r '.filtered_reads_dir' config.json
+    jq -r '.final_outputs_dir' config.json
 
     >>>
 
@@ -67,6 +68,7 @@ task read_config{
 
 task AmpIllumina_sm{
     input{
+        File config_json
         String output_prefix
         String fastqc_out_dir
         String trimmed_reads_dir
@@ -75,16 +77,21 @@ task AmpIllumina_sm{
         String container
     }
     command <<<
-
-    sed -ie 's/config.yaml/config.json/' Snakefile
+    cp -r /data/SW_AmpIllumina-A_1.0.1/* .
+    cp ~{config_json} config.json
+    sed -i -e 's/config.yaml/config.json/' Snakefile 
+    export SNAKEMAKE_OUTPUT_CACHE=$PWD
     snakemake --use-conda --conda-prefix /opt/conda/envs -j 2 -p
 
+    dir=$(dirname  ~{final_outputs_dir})
     zip -r ~{output_prefix}_outdirs.zip \
     ~{fastqc_out_dir} ~{trimmed_reads_dir} ~{filtered_reads_dir} ~{final_outputs_dir}
+    cp -f ~{output_prefix}_outdirs.zip $dir/
 
     >>>
     output{
         File zipped_output = "~{output_prefix}_outdirs.zip"
+        String AmpIllumina_final_outputs_dir = "~{final_outputs_dir}"
     }
 
     runtime{
@@ -108,10 +115,10 @@ task tsv_to_json{
 
         # Print the list of TSV files
         for tsv_file in tsv_files:
-            tsv_basename = Path(tsv_file_path).stem
+            tsv_basename = Path(tsv_file).stem
             json_file = tsv_basename + ".json"
             df = pd.read_csv(tsv_file, delimiter='\t')
-            df.to_json(json_file, orient='records', lines=True)
+            df.to_json(Path(directory_path,json_file), orient='records', lines=True)
         CODE
     >>>
     output{

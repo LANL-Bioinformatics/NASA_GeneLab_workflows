@@ -1,7 +1,7 @@
 {
     "data_type": "PE",
-    "sample_info_file": "unique-sample-IDs.txt",
-    "raw_reads_dir": "../Raw_Sequence_Data/",
+    "sample_info_file": "/path/to/Raw_Sequence_Data/unique-sample-IDs.txt",
+    "raw_reads_dir": "/path/to/Raw_Sequence_Data/",
     "raw_R1_suffix": "_R1_raw.fastq.gz",
     "raw_R2_suffix": "_R2_raw.fastq.gz",
     "trim_primers": "TRUE",
@@ -16,14 +16,14 @@
     "right_trunc": 0,
     "left_maxEE": 1,
     "right_maxEE": 1,
-    "min_cutadapt_len": 150,
+    "min_cutadapt_len": 130,
     "primer_trimmed_R1_suffix": "_R1_trimmed.fastq.gz",
     "primer_trimmed_R2_suffix": "_R2_trimmed.fastq.gz",
     "filtered_R1_suffix": "_R1_filtered.fastq.gz",
     "filtered_R2_suffix": "_R2_filtered.fastq.gz",
-    "output_prefix": "",
-    "fastqc_out_dir": "../FastQC_Outputs/",
-    "trimmed_reads_dir": "../Trimmed_Sequence_Data/",
-    "filtered_reads_dir": "../Filtered_Sequence_Data/",
-    "final_outputs_dir": "../Final_Outputs/"
+    "output_prefix": "Test_",
+    "fastqc_out_dir": "/path/to/output/FastQC_Outputs/",
+    "trimmed_reads_dir": "/path/to/Trimmed_Sequence_Data/",
+    "filtered_reads_dir": "/path/to/Filtered_Sequence_Data/",
+    "final_outputs_dir": "/path/to/output/Final_Outputs/"
 }
