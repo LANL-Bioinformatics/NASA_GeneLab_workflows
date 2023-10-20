@@ -58,6 +58,25 @@ Description of the files:
 }
 ```
 
+## Test Data
+
+[Test data](https://urldefense.com/v3/__https://figshare.com/ndownloader/files/39537235__;!!Bt8fGhp8LhKGRg!Fjl7EeJDeVHkdH7hE5W_ZW5vmftNfvOKIGUyW3-cpqnwp4-Q2JOawBk_gLpfPlHiwHuUS2mWNEaNyH7zHjogfIPtJA$)
+
+`unique-sample-IDs.txt`
+
+```text
+F10
+F3
+F5
+F8
+F9
+G10
+G3
+G5
+G8
+G9
+```
+
 ## Output files
 The output will have four directories and one zip file of all output.
 
