@@ -94,7 +94,7 @@ task AmpIllumina_sm{
             tsv_basename = Path(tsv_file).stem
             json_file = tsv_basename + ".json"
             df = pd.read_csv(tsv_file, delimiter='\t')
-            df.to_json(Path(directory_path,json_file), orient='records', lines=True)
+            df.to_json(Path(directory_path,json_file), orient='records')
     CODE
 
     # zip output
