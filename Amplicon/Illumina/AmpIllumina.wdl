@@ -22,15 +22,9 @@ workflow AmpIllumina{
         container = container
     }
 
-    call tsv_to_json{
-        input:
-        final_outputs_dir = AmpIllumina_sm.AmpIllumina_final_outputs_dir,
-        container = container
-    }
-
     output{
         File zipped_output = AmpIllumina_sm.zipped_output
-        Array[File] json_file = tsv_to_json.json_file
+        Array[File] json_file = AmpIllumina_sm.json_files
     }
     
 }
@@ -76,36 +70,18 @@ task AmpIllumina_sm{
         String final_outputs_dir
         String container
     }
+
+    
     command <<<
+    # run pipeline
     cp -r /data/SW_AmpIllumina-A_1.0.1/* .
     cp ~{config_json} config.json
     sed -i -e 's/config.yaml/config.json/' Snakefile 
     export SNAKEMAKE_OUTPUT_CACHE=$PWD
     snakemake --use-conda --conda-prefix /opt/conda/envs -j 2 -p
 
-    dir=$(dirname  ~{final_outputs_dir})
-    zip -r ~{output_prefix}_outdirs.zip \
-    ~{fastqc_out_dir} ~{trimmed_reads_dir} ~{filtered_reads_dir} ~{final_outputs_dir}
-    cp -f ~{output_prefix}_outdirs.zip $dir/
-
-    >>>
-    output{
-        File zipped_output = "~{output_prefix}_outdirs.zip"
-        String AmpIllumina_final_outputs_dir = "~{final_outputs_dir}"
-    }
-
-    runtime{
-        docker: container
-    }
-}
-
-task tsv_to_json{
-    input{
-        String final_outputs_dir
-        String container
-    }
-    command <<<
-        python <<CODE
+    # tsv to json
+    python <<CODE
 
         import pandas as pd
         from pathlib import Path
@@ -119,14 +95,25 @@ task tsv_to_json{
             json_file = tsv_basename + ".json"
             df = pd.read_csv(tsv_file, delimiter='\t')
             df.to_json(Path(directory_path,json_file), orient='records', lines=True)
-        CODE
+    CODE
+
+    # zip output
+    dir=$(dirname  ~{final_outputs_dir})
+    zip -r ~{output_prefix}_outdirs.zip \
+    ~{fastqc_out_dir} ~{trimmed_reads_dir} ~{filtered_reads_dir} ~{final_outputs_dir}
+    cp -f ~{output_prefix}_outdirs.zip $dir/
+
     >>>
     output{
-        Array[File] json_file = glob('~{final_outputs_dir}/*.json')
+        String AmpIllumina_final_outputs_dir = "~{final_outputs_dir}"
+        Array[File] json_files = glob('~{final_outputs_dir}/*.json')
+        File zipped_output = "~{output_prefix}_outdirs.zip"
     }
+
     runtime{
         docker: container
     }
-
 }
+
+
 
