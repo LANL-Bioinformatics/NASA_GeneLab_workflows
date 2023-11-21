@@ -70,7 +70,6 @@ task AmpIllumina_sm{
         String final_outputs_dir
         String container
     }
-
     
     command <<<
     # run pipeline
