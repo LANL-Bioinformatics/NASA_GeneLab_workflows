@@ -82,18 +82,18 @@ task AmpIllumina_sm{
     # tsv to json
     python <<CODE
 
-        import pandas as pd
-        from pathlib import Path
+    import pandas as pd
+    from pathlib import Path
 
-        directory_path = Path('~{final_outputs_dir}')
-        tsv_files = list(directory_path.glob('*.tsv'))
+    directory_path = Path('~{final_outputs_dir}')
+    tsv_files = list(directory_path.glob('*.tsv'))
 
-        # Print the list of TSV files
-        for tsv_file in tsv_files:
-            tsv_basename = Path(tsv_file).stem
-            json_file = tsv_basename + ".json"
-            df = pd.read_csv(tsv_file, delimiter='\t')
-            df.to_json(Path(directory_path,json_file), orient='records', lines=True)
+    # Print the list of TSV files
+    for tsv_file in tsv_files:
+        tsv_basename = Path(tsv_file).stem
+        json_file = tsv_basename + ".json"
+        df = pd.read_csv(tsv_file, delimiter='\t')
+        df.to_json(Path(directory_path,json_file), orient='records')
     CODE
 
     # zip output
