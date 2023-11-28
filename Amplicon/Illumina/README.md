@@ -1,7 +1,7 @@
 
 # Illumina amplicon analysis workflow
 
-The WDL version of [GeneLab bioinformatics processing pipeline for Illumina amplicon sequencing data](https://github.com/nasa/GeneLab_Data_Processing/tree/master/Amplicon/Illumina)
+The WDL version of [GeneLab bioinformatics processing pipeline for Illumina amplicon sequencing data](https://github.com/nasa/GeneLab_Data_Processing/tree/amplicon-add-runsheet-visualizations/Amplicon/Illumina)
 
 ## Running Workflow in Cromwell
 
@@ -12,7 +12,7 @@ Description of the files:
 
 ## The Docker image and Dockerfile can be found here
 
-[bioedge/ampillumina:1.0.1](https://hub.docker.com/r/bioedge/ampillumina)
+[bioedge/ampillumina:1.2.0](https://hub.docker.com/r/bioedge/ampillumina)
 
 ## Input files
 
@@ -21,6 +21,7 @@ Description of the files:
 ```json
 {
     "AmpIllumina.config_json": "/path/to/Illumina/config.json"
+    "AmpIllumina.OSD_id":""
 }
 ```
 
@@ -28,54 +29,40 @@ Description of the files:
 
 ```json
 {
-    "data_type": "PE",
-    "sample_info_file": "/path/to/unique-sample-IDs.txt",
-    "raw_reads_dir": "/path/to/Raw_Sequence_Data/",
-    "raw_R1_suffix": "_R1_raw.fastq.gz",
-    "raw_R2_suffix": "_R2_raw.fastq.gz",
+    "isa_archive":"",
+    "runsheet":"/path/to/runsheet.csv",
+    "raw_reads_dir": "/path/to/raw-reads/",
     "trim_primers": "TRUE",
-    "F_primer": "^GTGCCAGCMGCCGCGGTAA",
-    "R_primer": "^GGACTACHVGGGTWTCTAA",
+    "anchor_primers":"TRUE",
     "primers_linked": "TRUE",
-    "F_linked_primer": "^GTGCCAGCMGCCGCGGTAA...TTAGAWACCCBDGTAGTCC",
-    "R_linked_primer": "^GGACTACHVGGGTWTCTAA...TTACCGCGGCKGCTGGCAC",
     "discard_untrimmed": "TRUE",
     "target_region": "16S",
+    "concatenate_reads_only":"FALSE",
     "left_trunc": 0,
     "right_trunc": 0,
     "left_maxEE": 1,
     "right_maxEE": 1,
-    "min_cutadapt_len": 130,
-    "primer_trimmed_R1_suffix": "_R1_trimmed.fastq.gz",
-    "primer_trimmed_R2_suffix": "_R2_trimmed.fastq.gz",
-    "filtered_R1_suffix": "_R1_filtered.fastq.gz",
-    "filtered_R2_suffix": "_R2_filtered.fastq.gz",
-    "output_prefix": "projct_name-",
-    "fastqc_out_dir": "/path/to/FastQC_Outputs/",
-    "trimmed_reads_dir": "/path/to/Trimmed_Sequence_Data/",
-    "filtered_reads_dir": "/path/to/Filtered_Sequence_Data/",
-    "final_outputs_dir": "/path/to/Final_Outputs/"
+    "min_cutadapt_len": 130, 
+    "output_prefix": "",
+    "info_out_dir":"/path/to/workflow_output/Processing_Info/",
+    "fastqc_out_dir": "/path/to/workflow_output/FastQC_Outputs/",
+    "trimmed_reads_dir": "/path/to/workflow_output/Trimmed_Sequence_Data/",
+    "filtered_reads_dir": "/path/to/workflow_output/Filtered_Sequence_Data/",
+    "final_outputs_dir": "/path/to/workflow_output/Final_Outputs/",
+    "plots_dir":"/path/to/workflow_output/Final_Outputs/Plots/"
+
 }
 ```
 
 ## Test Data
 
-[Test data](https://urldefense.com/v3/__https://figshare.com/ndownloader/files/39537235__;!!Bt8fGhp8LhKGRg!Fjl7EeJDeVHkdH7hE5W_ZW5vmftNfvOKIGUyW3-cpqnwp4-Q2JOawBk_gLpfPlHiwHuUS2mWNEaNyH7zHjogfIPtJA$)
+[Test data](https://figshare.com/ndownloader/files/39537235)
 
-`unique-sample-IDs.txt`
+[runsheet.csv for test data]()
 
-```text
-F10
-F3
-F5
-F8
-F9
-G10
-G3
-G5
-G8
-G9
-```
+The Runsheet is a csv file that contains the metadata required for processing amplicon sequencing datasets through GeneLab's GeneLab Illumina amplicon sequencing data processing pipeline (AmpIllumina). Please see [here](https://github.com/nasa/GeneLab_Data_Processing/tree/amplicon-add-runsheet-visualizations/Amplicon/Illumina/Workflow_Documentation/SW_AmpIllumina-A/examples/runsheet) for Specification
+
+
 
 ## Output files
 The output will have four directories and one zip file of all output.
@@ -104,10 +91,59 @@ The output will have four directories and one zip file of all output.
 │   ├── taxonomy-and-counts.tsv
 │   ├── taxonomy-and-counts.json
 │   ├── taxonomy.json
-│   └── taxonomy.tsv
+│   ├── taxonomy.tsv
+│   ├── Plots
+│   │   ├── PCoA
+│   │   │   ├── PCoA_w_labels.png
+│   │   │   └── PCoA_without_labels.png
+│   │   ├── color_legend.png
+│   │   ├── de
+│   │   │   ├── differential_abundance
+│   │   │   │   ├── Ground_Control_&_non-irradiated_vs_Space_Flight_&_space_radiation.csv
+│   │   │   │   └── Space_Flight_&_space_radiation_vs_Ground_Control_&_non-irradiated.csv
+│   │   │   ├── normalized_counts.tsv
+│   │   │   └── volcano
+│   │   │       ├── volcano_Ground_Control_&_non-irradiated_vs_Space_Flight_&_space_radiation.png
+│   │   │       └── volcano_Space_Flight_&_space_radiation_vs_Ground_Control_&_non-irradiated.png
+│   │   ├── dendrogram
+│   │   │   └── dendrogram_by_group.png
+│   │   ├── rarefaction
+│   │   │   └── rarefaction.png
+│   │   ├── richness
+│   │   │   ├── richness_by_group.png
+│   │   │   └── richness_by_sample.png
+│   │   └── taxonomy
+│           ├── relative_classes.png
+│           └── relative_phyla.png
+├── Processing_Info
+│   ├── R-processing.log
+│   ├── R-visualizations.log
+│   ├── Snakefile
+│   ├── all-benchmarks.tsv
+│   ├── benchmarks
+│   │   ├── combine_cutadapt_logs_and_summarize-benchmarks.tsv
+│   │   ├── etc
+│   ├── config
+│   │   └── multiqc.config
+│   ├── config.yaml
+│   ├── envs
+│   │   ├── R.yaml
+│   │   ├── R_visualizations.yaml
+│   │   ├── cutadapt.yaml
+│   │   └── qc.yaml
+│   ├── runsheet.csv
+│   ├── scripts
+│   │   ├── Illumina-PE-R-processing.R
+│   │   ├── Illumina-R-visualizations.R
+│   │   ├── Illumina-SE-R-processing.R
+│   │   ├── combine-benchmarks.sh
+│   │   ├── copy_info.py
+│   │   └── run_workflow.py
+│   └── unique-sample-IDs.txt
+
 
 ```
 
 ## Notes
-* make sure the raw reads with suffix _R1_raw.fastq.gz or _R2_raw.fastq.gz as defined in config.json
+* make sure the raw reads with suffix _R1_raw.fastq.gz or _R2_raw.fastq.gz as defined in runsheet.csv
 * adjust minimum length threshold for cutadapt in config.json. If too stringent, there will be no reads for downstream analysis.

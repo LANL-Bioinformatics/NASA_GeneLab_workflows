@@ -1,3 +1,4 @@
 {
-    "AmpIllumina.config_json": "/home/kli/Documents/NASA_GeneLab_workflows/Amplicon/Illumina/config.json"
+    "AmpIllumina.config_json": "/path/to/config.json",
+    "AmpIllumina.OSD_id":""
 }
