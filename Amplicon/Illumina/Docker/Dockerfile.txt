@@ -18,7 +18,7 @@ ENV LC_ALL=C
 #USER root 
 
 #  genelab-utils install 
-RUN micromamba create -n genelab-utils -c conda-forge -c bioconda -c defaults -c astrobiomike 'genelab-utils>=1.1.02' jq \
+RUN micromamba create -n genelab-utils -c conda-forge -c bioconda -c defaults -c astrobiomike 'genelab-utils>=1.1.02' jq git pip \
     && micromamba clean --all -y \
     && echo "micromamba activate genelab-utils" >> ~/.bashrc \
     && echo "alias ll='ls -alh' " >> ~/.bashrc
@@ -32,9 +32,10 @@ RUN eval "$(micromamba shell hook --shell bash)" \
     && conda config --add channels conda-forge \
     && conda config --set channel_priority strict \
     && micromamba activate genelab-utils \
+    && pip install git+https://github.com/torres-alexis/dp_tools.git@amplicon_updates \
     && chmod -R 777 $HOME/.cache \
-    && GL-get-workflow Amplicon-Illumina --wanted-version 1.0.1
+    && GL-get-workflow Amplicon-Illumina --wanted-version 1.2.0
 
 # directory with Snakefile  
-WORKDIR /data/SW_AmpIllumina-A_1.0.1
+WORKDIR /data/SW_AmpIllumina-A_1.2.0
 
