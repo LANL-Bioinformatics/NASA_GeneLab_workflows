@@ -22,6 +22,7 @@ Description of the files:
 {
     "AmpIllumina.config_json": "/path/to/Illumina/config.json"
     "AmpIllumina.OSD_id":""
+    "AmpIllumina.specify_runsheet":""
 }
 ```
 
