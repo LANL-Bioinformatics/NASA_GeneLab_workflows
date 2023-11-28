@@ -58,7 +58,7 @@ Description of the files:
 
 [Test data](https://figshare.com/ndownloader/files/39537235)
 
-[runsheet.csv for test data]()
+[runsheet.csv for test data](https://raw.githubusercontent.com/LANL-Bioinformatics/NASA_GeneLab_workflows/feedback_edits/Amplicon/Illumina/runsheet.csv)
 
 The Runsheet is a csv file that contains the metadata required for processing amplicon sequencing datasets through GeneLab's GeneLab Illumina amplicon sequencing data processing pipeline (AmpIllumina). Please see [here](https://github.com/nasa/GeneLab_Data_Processing/tree/amplicon-add-runsheet-visualizations/Amplicon/Illumina/Workflow_Documentation/SW_AmpIllumina-A/examples/runsheet) for Specification
 
