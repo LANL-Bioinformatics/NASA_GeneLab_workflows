@@ -184,6 +184,7 @@ task AmpIllumina_sm{
 
         else
             python ./scripts/run_workflow.py --output-prefix "~{output_prefix}" --outputDir "$outdir" --left-trunc "~{left_trunc}" --right-trunc "~{right_trunc}" --left-maxEE "~{left_maxEE}" --right-maxEE "~{right_maxEE}" --concatenate_reads_only "~{concatenate_reads_only}"  --trim-primers "~{trim_primers}" --discard-untrimmed "~{discard_untrimmed}" --min_trimmed_length "~{min_cutadapt_len}"  --anchor-primers "~{anchor_primers}" --primers-linked "~{primers_linked}" --OSD ~{OSD_id} --run "snakemake --use-conda --conda-prefix /opt/conda/envs -j 4 -p"
+        fi
 
     fi
 
