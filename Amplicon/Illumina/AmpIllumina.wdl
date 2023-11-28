@@ -37,6 +37,7 @@ workflow AmpIllumina{
         left_maxEE = read_config.left_maxEE,
         right_maxEE = read_config.right_maxEE,
         min_cutadapt_len = read_config.min_cutadapt_len,
+        
         container = container
     }
 
@@ -165,12 +166,12 @@ task AmpIllumina_sm{
     then
         if [ -f "~{run_sheet}" ]
         then 
-            python ./scripts/run_workflow.py --outputDir "$outdir" --left-trunc "~{left_trunc}" --right-trunc "~{right_trunc}" --left-maxEE "~{left_maxEE}" --right-maxEE "~{right_maxEE}" --concatenate_reads_only "~{concatenate_reads_only}" --trim-primers "~{trim_primers}" --discard-untrimmed "~{discard_untrimmed}" --min_trimmed_length "~{min_cutadapt_len}" --anchor-primers "~{anchor_primers}" --primers-linked "~{primers_linked}" --runsheetPath ~{run_sheet} --run "snakemake --use-conda --conda-prefix /opt/conda/envs -j 4 -p"
+            python ./scripts/run_workflow.py --output-prefix "~{output_prefix}" --outputDir "$outdir" --left-trunc "~{left_trunc}" --right-trunc "~{right_trunc}" --left-maxEE "~{left_maxEE}" --right-maxEE "~{right_maxEE}" --concatenate_reads_only "~{concatenate_reads_only}" --trim-primers "~{trim_primers}" --discard-untrimmed "~{discard_untrimmed}" --min_trimmed_length "~{min_cutadapt_len}" --anchor-primers "~{anchor_primers}" --primers-linked "~{primers_linked}" --runsheetPath ~{run_sheet} --run "snakemake --use-conda --conda-prefix /opt/conda/envs -j 4 -p"
         else
             echo "No OSD_id and No run_sheet."
         fi 
     else
-        python ./scripts/run_workflow.py --outputDir "$outdir" --left-trunc "~{left_trunc}" --right-trunc "~{right_trunc}" --left-maxEE "~{left_maxEE}" --right-maxEE "~{right_maxEE}" --concatenate_reads_only "~{concatenate_reads_only}"  --trim-primers "~{trim_primers}" --discard-untrimmed "~{discard_untrimmed}" --min_trimmed_length "~{min_cutadapt_len}"  --anchor-primers "~{anchor_primers}" --primers-linked "~{primers_linked}" --OSD ~{OSD_id} --run "snakemake --use-conda --conda-prefix /opt/conda/envs -j 4 -p"
+        python ./scripts/run_workflow.py --output-prefix "~{output_prefix}" --outputDir "$outdir" --left-trunc "~{left_trunc}" --right-trunc "~{right_trunc}" --left-maxEE "~{left_maxEE}" --right-maxEE "~{right_maxEE}" --concatenate_reads_only "~{concatenate_reads_only}"  --trim-primers "~{trim_primers}" --discard-untrimmed "~{discard_untrimmed}" --min_trimmed_length "~{min_cutadapt_len}"  --anchor-primers "~{anchor_primers}" --primers-linked "~{primers_linked}" --OSD ~{OSD_id} --run "snakemake --use-conda --conda-prefix /opt/conda/envs -j 4 -p"
 
     fi
 
