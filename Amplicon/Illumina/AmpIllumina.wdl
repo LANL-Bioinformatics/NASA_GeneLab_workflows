@@ -3,7 +3,7 @@ workflow AmpIllumina{
     input{
         File config_json
         String OSD_id=""
-        File? specify_runsheet
+        String? specify_runsheet
         String container = "bioedge/ampillumina:1.2.0"
     }
 
@@ -89,7 +89,7 @@ task read_config{
         String trimmed_reads_dir = output_lines[2]
         String filtered_reads_dir = output_lines[3]
         String final_outputs_dir = output_lines[4]
-        File?  run_sheet_file = output_lines[5]
+        String? run_sheet_file = output_lines[5]
         String primers_linked = output_lines[6]
         String anchor_primers = output_lines[7]
         String raw_reads_dir = output_lines[8]
@@ -139,8 +139,8 @@ task AmpIllumina_sm{
     input{
         #File config_yaml
         String OSD_id
-        File? run_sheet
-        File? specify_runsheet
+        String? run_sheet
+        String? specify_runsheet
         String target 
         String output_prefix
         String fastqc_out_dir
