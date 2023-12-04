@@ -164,8 +164,10 @@ task AmpIllumina_sm{
     command <<<
     # run pipeline
     cp -r /data/SW_AmpIllumina-A_1.2.0/* .
+    mkdir -p ~{raw_reads_dir}
     ln -s ~{raw_reads_dir} raw_reads
     
+
     export SNAKEMAKE_OUTPUT_CACHE=$PWD
 
     outdir=$(dirname  ~{final_outputs_dir})
