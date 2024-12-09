@@ -15,7 +15,7 @@ ENV LANG=en_US.UTF-8
 ENV SHELL=/bin/bash
 ENV LC_ALL=C
 # SHELL ["/bin/bash", "-c"] 
-#USER root 
+USER root 
 
 #  genelab-utils install 
 #  pyopenssl=24.2.1 for solving issue: module 'lib' has no attribute 'X509_V_FLAG_NOTIFY_POLICY'. Did you mean: 'X509_V_FLAG_EXPLICIT_POLICY'?
